@@ -1,1 +1,85 @@
-index.html
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Earning App</title>
+<style>
+body{font-family:Arial;background:#eef2f7;margin:0;color:#222}
+header{background:#0757c8;color:white;text-align:center;padding:22px}
+main{padding:15px;max-width:480px;margin:auto}
+.card{background:white;padding:18px;margin:14px 0;border-radius:14px}
+input{width:95%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:8px}
+button{background:#0757c8;color:white;border:0;padding:13px;border-radius:8px;width:100%;margin-top:8px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header><h1>💰 My Earning App</h1><p>Earn Commission & Grow</p></header>
+<main>
+<div id="login" class="card">
+<h2>Register / Login</h2>
+<input id="name" placeholder="अपना नाम">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login / Register</button>
+</div>
+<div id="home" class="hidden">
+<div class="card">
+<h2>Welcome <span id="welcome"></span>!</h2>
+<h3>Wallet Balance: ₹<span id="balance">0</span></h3>
+<h3>Commission: ₹<span id="earning">0</span></h3>
+</div>
+<div class="card">
+<h2>🛍️ Shopping</h2>
+<p>हमारे Shopping Link से खरीदारी करें।</p>
+<a href="https://www.shoppingpay.xyz/share/bikb70_hg9m" target="_blank">
+<button>Start Shopping</button></a>
+</div>
+<div class="card">
+<h2>👥 Refer & Earn</h2>
+<p>आपका Referral Code: <b id="ref"></b></p>
+</div>
+<div class="card">
+<h2>💳 Withdrawal Request</h2>
+<input id="amount" type="number" placeholder="Amount">
+<input id="upi" placeholder="UPI ID">
+<button onclick="withdraw()">Submit Request</button>
+</div>
+<button onclick="logout()">Logout</button>
+</div>
+</main>
+<script>
+function login(){
+let n=document.getElementById('name').value.trim();
+let p=document.getElementById('pass').value;
+if(!n||!p){alert('नाम और Password भरें');return}
+let users=JSON.parse(localStorage.getItem('users')||'{}');
+if(users[n]&&users[n].password!==p){alert('गलत Password');return}
+if(!users[n])users[n]={password:p,balance:0,earning:0};
+localStorage.setItem('users',JSON.stringify(users));
+localStorage.setItem('current',n);
+show();
+}
+function show(){
+let n=localStorage.getItem('current');
+if(!n)return;
+let u=JSON.parse(localStorage.getItem('users'))[n];
+document.getElementById('login').classList.add('hidden');
+document.getElementById('home').classList.remove('hidden');
+document.getElementById('welcome').innerText=n;
+document.getElementById('balance').innerText=u.balance;
+document.getElementById('earning').innerText=u.earning;
+document.getElementById('ref').innerText='MY'+n.toUpperCase();
+}
+function withdraw(){
+alert('Withdrawal अभी Demo है। असली भुगतान के लिए सुरक्षित सर्वर जरूरी है।');
+}
+function logout(){
+localStorage.removeItem('current');
+location.reload();
+}
+show();
+</script>
+</body>
+</html>
